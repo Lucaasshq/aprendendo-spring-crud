@@ -30,4 +30,10 @@ public class ProdutosController {
         productRepository.save(product);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping
+    public ResponseEntity deleteProduct(@RequestBody @Validated RequestProduct data) {
+        Product product = new Product(data);
+        productRepository.delete(product);
+    }
 }
