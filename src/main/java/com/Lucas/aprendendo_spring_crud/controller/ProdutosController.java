@@ -17,13 +17,13 @@ public class ProdutosController {
     @Autowired
     private ProductRepository productRepository;
 
-    @GetMapping
+    @GetMapping("/product")
     public ResponseEntity getAllProducts() {
         List<Product> productList = productRepository.findAll();
         return ResponseEntity.ok(productList);
     }
 
-    @PostMapping
+    @PostMapping("/product/item")
     public ResponseEntity registerProduct(@RequestBody @Validated RequestProduct data) {
         Product product = new Product(data);
         System.out.println(data);
@@ -31,9 +31,11 @@ public class ProdutosController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping
-    public ResponseEntity deleteProduct(@RequestBody @Validated RequestProduct data) {
-        Product product = new Product(data);
-        productRepository.delete(product);
+    @PutMapping
+    public ResponseEntity updateProduct(@RequestBody @Validated RequestProduct data )  {
+        Product product = productRepository.getReferenceById(data.id());
+        product.setName(data.name());
+        product.setPrice_in_cents(data.price_in_cents());
+        return ResponseEntity.ok(product);
     }
 }
